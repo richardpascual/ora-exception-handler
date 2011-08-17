@@ -1,20 +1,35 @@
-CREATE OR REPLACE PACKAGE BODY err
+-- err.pkb
+-- project: ora-exception-handler
+/* Error Package Body
+   Author: Richard Pascual
+   Date: 08/17/2011
+   
+   Note: References to UTL_FILE do _not_ work for Oracle 11g R2 XE; please see
+         special branch for XE implementations of this package.
+   
+*/   
+
+CREATE OR REPLACE PACKAGE BODY mauka.err
 IS
    g_target   PLS_INTEGER     := c_table;
    g_file     VARCHAR2 (2000) := 'err.log';
    g_dir      VARCHAR2 (2000) := NULL;
+   g_detail   VARCHAR2 (20)   := 'NO DETAIL PROVIDED';
+   g_info     VARCHAR2 (20)   := 'NONE';
 
    PROCEDURE handle (
       errcode   IN   PLS_INTEGER := NULL,
       errmsg    IN   VARCHAR2 := NULL,
       logerr    IN   BOOLEAN := TRUE,
-      reraise   IN   BOOLEAN := FALSE
+      reraise   IN   BOOLEAN := FALSE,
+      detail    IN   VARCHAR2 := NULL,
+      info      IN   VARCHAR2 := NULL      
    )
    IS
    BEGIN
       IF logerr
       THEN
-         log (errcode, errmsg);
+         log (errcode, errmsg, detail, info);
       END IF;
 
       IF reraise
@@ -46,7 +61,7 @@ IS
       /* Re-raise any other exception. */
       ELSIF l_errcode != 0
       THEN
-         PLVdyn.plsql ('DECLARE myexc EXCEPTION; ' ||
+         execute immediate ('DECLARE myexc EXCEPTION; ' ||
                           '   PRAGMA EXCEPTION_INIT (myexc, ' ||
                           TO_CHAR (l_errcode) ||
                           ');' ||
@@ -57,19 +72,29 @@ IS
 
    PROCEDURE log (
       errcode   IN   PLS_INTEGER := NULL,
-      errmsg    IN   VARCHAR2 := NULL
+      errmsg    IN   VARCHAR2 := NULL,
+      detail    IN   VARCHAR2 := NULL,
+      info      IN   VARCHAR2 := NULL      
    )
    IS
       PRAGMA AUTONOMOUS_TRANSACTION;
       
       l_sqlcode pls_integer := NVL (errcode, SQLCODE);
       l_sqlerrm VARCHAR2(1000) := NVL (errmsg, SQLERRM);
+      l_detail  VARCHAR2(250)  := NVL (detail, g_detail);
+      l_info    VARCHAR2(4000) := NVL (info, g_info);
+      l_sid pls_integer := sys_context('USERENV','SID');
+      
    BEGIN
       IF g_target = c_table
       THEN
          INSERT INTO errlog
-                     (errcode, errmsg, created_on, created_by)
+                     (session_id, short_detail, more_info, errcode, errmsg, 
+                      created_on, created_by)
               VALUES (
+                 l_sid,
+                 l_detail,
+                 l_info,
                  l_sqlcode,
                  l_sqlerrm,
                  SYSDATE,

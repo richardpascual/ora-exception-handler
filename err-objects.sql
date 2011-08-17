@@ -11,11 +11,47 @@
 
 */   
 
-DROP TABLE errlog;
+ALTER SESSION SET CURRENT_SCHEMA = MAUKA;
+
+-- DROP TABLE errlog;
+-- DROP SEQUENCE errlog_seq;
+-- DROP TRIGGER errlog_trbi;
 
 CREATE TABLE errlog (
-    errcode INTEGER,
-    errmsg VARCHAR2(4000),
-    created_on DATE,
-    created_by VARCHAR2(100)
-    );
+    log_id   INTEGER NOT NULL,
+    session_id INTEGER NOT NULL,
+    short_detail VARCHAR2(250) NOT NULL,
+    more_info VARCHAR2(4000) NOT NULL,
+    errcode  INTEGER NOT NULL,
+    errmsg   VARCHAR2(4000) NOT NULL,
+    created_on  TIMESTAMP(6) NOT NULL,
+    created_by  VARCHAR2(100) NOT NULL,
+       constraint errlog_pk primary key ( log_id ) );
+
+CREATE SEQUENCE errlog_seq
+   MINVALUE 1
+   START WITH 1
+   INCREMENT BY 1
+   ORDER
+   CACHE 20;
+       
+CREATE TRIGGER errlog_trbi
+   BEFORE INSERT ON errlog
+   FOR EACH ROW
+   DECLARE
+       l_log_id pls_integer;
+   BEGIN
+       l_log_id := errlog_seq.nextval;
+       :new.log_id := l_log_id;
+END;
+
+
+
+
+/* The following is optional, which may be helpful in providing access to this
+   procedure from a reusable perspective (i.e., multiple domains).
+   
+   create or replace public synonym errlog for mauka.err;
+   create or replace public synonym err for mauka.err;
+   
+*/
