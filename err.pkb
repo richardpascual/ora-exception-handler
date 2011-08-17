@@ -9,7 +9,7 @@
    
 */   
 
-CREATE OR REPLACE PACKAGE BODY mauka.err
+CREATE OR REPLACE PACKAGE BODY err
 IS
    g_target   PLS_INTEGER     := c_table;
    g_file     VARCHAR2 (2000) := 'err.log';

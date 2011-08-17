@@ -8,7 +8,7 @@
          special branch for XE implementations of this package.
 */   
 
-CREATE OR REPLACE PACKAGE mauka.err
+CREATE OR REPLACE PACKAGE err
 IS
    c_table    CONSTANT PLS_INTEGER := 1;                   -- Default
    c_file     CONSTANT PLS_INTEGER := 2;
