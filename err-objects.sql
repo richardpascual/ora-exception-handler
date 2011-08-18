@@ -17,6 +17,10 @@
 
 ALTER SESSION SET CURRENT_SCHEMA = &1;
 
+-- assuming you have DBA privileges or equivallent, the following call may be
+-- useful initially:
+-- grant execute on sys.util_file to &1;
+
 -- DROP TABLE errlog;
 -- DROP SEQUENCE errlog_seq;
 -- DROP TRIGGER errlog_trbi;
