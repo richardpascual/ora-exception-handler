@@ -102,12 +102,21 @@ IS
               );
       ELSIF g_target = c_file
       THEN
-         /* File output option disabled as it does not look readily available on
-            some installations of Oracle (i.e., DBA disabled access to server
-            or database file system for general users. */
-         DBMS_OUTPUT.put_line ('This option is not available.');
-      
-      
+         DECLARE
+            fid   UTL_FILE.file_type;
+         BEGIN
+            fid := UTL_FILE.fopen (g_dir, g_file, 'A');
+            UTL_FILE.put_line (fid,
+               'Error log by ' || USER || ' at  ' ||
+                  TO_CHAR (SYSDATE, 'mm/dd/yyyy')
+            );
+            UTL_FILE.put_line (fid, NVL (errmsg, SQLERRM));
+            UTL_FILE.fclose (fid);
+         EXCEPTION
+            WHEN OTHERS
+            THEN
+               UTL_FILE.fclose (fid);
+         END;
       ELSIF g_target = c_screen
       THEN
          DBMS_OUTPUT.put_line ('Error log by ' || USER || ' at  ' ||
