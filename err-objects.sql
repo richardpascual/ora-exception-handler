@@ -4,6 +4,10 @@
    any data from errlog you wish to keep as this collection of schema objects
    are dropped completely before replacement.
    
+   To install these objects, run this script in SQL Plus with the following
+   argument in position one: TARGET SCHEMA where you would like the supporting
+   objects to be insalled.
+   
    -- Richard Paascual
    -- Project Tomosoft
    -- Oracle Exception Handler
@@ -11,7 +15,7 @@
 
 */   
 
-ALTER SESSION SET CURRENT_SCHEMA = MAUKA;
+ALTER SESSION SET CURRENT_SCHEMA = &1;
 
 -- DROP TABLE errlog;
 -- DROP SEQUENCE errlog_seq;

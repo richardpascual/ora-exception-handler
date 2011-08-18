@@ -1,5 +1,8 @@
 -- err.pks
 -- project: ora-exception-handler
+
+CREATE OR REPLACE PACKAGE err
+IS
 /* Error Package Specification
    Author: Richard Pascual
    Date: 08/17/2011
@@ -7,11 +10,8 @@
    Note: References to UTL_FILE do _not_ work for Oracle 11g R2 XE; please see
          special branch for XE implementations of this package.
 */   
-
-CREATE OR REPLACE PACKAGE err
-IS
    c_table    CONSTANT PLS_INTEGER := 1;                   -- Default
-   c_file     CONSTANT PLS_INTEGER := 2;
+   c_file     CONSTANT PLS_INTEGER := 2;                   -- Not Available
    c_screen   CONSTANT PLS_INTEGER := 3;
 
    PROCEDURE handle (

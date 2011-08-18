@@ -1,16 +1,16 @@
 -- err.pkb
 -- project: ora-exception-handler
+
+CREATE OR REPLACE PACKAGE BODY err
+IS
 /* Error Package Body
    Author: Richard Pascual
    Date: 08/17/2011
    
-   Note: References to UTL_FILE do _not_ work for Oracle 11g R2 XE; please see
-         special branch for XE implementations of this package.
+   Note: If you work in environments where references to UTL_FILE do _not_ work 
+         please see special branch for implementations without this package.
    
 */   
-
-CREATE OR REPLACE PACKAGE BODY err
-IS
    g_target   PLS_INTEGER     := c_table;
    g_file     VARCHAR2 (2000) := 'err.log';
    g_dir      VARCHAR2 (2000) := NULL;
@@ -102,21 +102,12 @@ IS
               );
       ELSIF g_target = c_file
       THEN
-         DECLARE
-            fid   UTL_FILE.file_type;
-         BEGIN
-            fid := UTL_FILE.fopen (g_dir, g_file, 'A');
-            UTL_FILE.put_line (fid,
-               'Error log by ' || USER || ' at  ' ||
-                  TO_CHAR (SYSDATE, 'mm/dd/yyyy')
-            );
-            UTL_FILE.put_line (fid, NVL (errmsg, SQLERRM));
-            UTL_FILE.fclose (fid);
-         EXCEPTION
-            WHEN OTHERS
-            THEN
-               UTL_FILE.fclose (fid);
-         END;
+         /* File output option disabled as it does not look readily available on
+            some installations of Oracle (i.e., DBA disabled access to server
+            or database file system for general users. */
+         DBMS_OUTPUT.put_line ('This option is not available.');
+      
+      
       ELSIF g_target = c_screen
       THEN
          DBMS_OUTPUT.put_line ('Error log by ' || USER || ' at  ' ||
