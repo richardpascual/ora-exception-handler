@@ -57,9 +57,9 @@ END;
 
 
 /* The following is optional, which may be helpful in providing access to this
-   procedure from a reusable perspective (i.e., multiple domains).
+   procedure from a reusable perspective (i.e., multiple schemas).
    
-   create or replace public synonym errlog for mauka.err;
-   create or replace public synonym err for mauka.err;
+   create or replace public synonym errlog for <your-error-schema>.errlog;
+   create or replace public synonym err for <your-error-schema>.err;
    
 */
