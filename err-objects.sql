@@ -1,17 +1,9 @@
 -- ora-exception-handler (err-objects.sql)
-/* Run this script first to drop and replace any existing objects created from
-   previous versions or the ora-exception-handler project. Be sure to back up
-   any data from errlog you wish to keep as this collection of schema objects
-   are dropped completely before replacement.
-   
-   To install these objects, run this script in SQL Plus with the following
-   argument in position one: TARGET SCHEMA where you would like the supporting
-   objects to be insalled.
-   
+/* 
    -- Richard Paascual
    -- Project Tomosoft
-   -- Oracle Exception Handler
-   -- 08/17/2011
+   -- Oracle Exception Handler, First Press
+   -- 06/19/2015
 
 */   
 
@@ -24,6 +16,7 @@ ALTER SESSION SET CURRENT_SCHEMA = &1;
 -- DROP TABLE errlog;
 -- DROP SEQUENCE errlog_seq;
 -- DROP TRIGGER errlog_trbi;
+
 
 CREATE TABLE errlog (
     log_id   INTEGER NOT NULL,
@@ -63,3 +56,8 @@ END;
    create or replace public synonym err for <your-error-schema>.err;
    
 */
+
+
+
+  
+
