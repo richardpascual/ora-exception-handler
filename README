@@ -1,0 +1,49 @@
+README
+
+The basic information on how to use this is at:
+
+https://github.com/richardpascual/ora-exception-handler/wiki
+
+Or continue reading...
+
+
+In your code, once you have created the supporting schema and compiled the package, add the following line to your exception block:
+
+EXCEPTION
+   WHEN OTHERS then err.handle;
+
+
+Additional references can be set through the package calls such as variables for self identification for the calling object, custom error messages or reporting detail, etc.  See the documenting wiki for explanation of how to use these enhanced features.
+
+
+Documentation
+
+This is one of the developer tools that are commonly used by my projects. It is a universal error handling package script which can be called from any block of Oracle PL/SQL code.
+Introduction
+
+In need of a generic tool for accurately debugging and exception handling? The ora-exception-handler package may be of use to you. Download the scripts and install them in the order indicated by the installation instructions that follow.
+Installation
+
+To make this work, you will need to have a custom table space defined and a few privileged user accounts set up on your Oracle installation.
+Implementation
+
+The simplest implementation is to call the package in an exception block within your PL/SQL code. The only relevant procedure in this package is "handle" which can be called with or without additional parameters in named notation.
+
+DECLARE
+    ...your pl/sql declarations here
+BEGIN
+    ...your pl/sql code here
+EXCEPTION
+    WHEN OTHERS then
+        err.handle;
+END;
+
+That's it. Very simple. The default behavior is to pass error data into the ERRLOG table so querying the errlog table will reveal the exception output received from the database.
+
+License
+
+Creative Commons Attribution-ShareAlike 4.0 International License
+
+
+Richard Pascual
+11/11/2015
