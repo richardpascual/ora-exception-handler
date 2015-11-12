@@ -2,7 +2,7 @@
 /*
    -- Richard Paascual
    -- Project Tomosoft
-   -- Oracle Exception Handler, First Press
+   -- Oracle Exception Handler, Enhanced Update
    -- 11/11/2015
 */
 
@@ -92,7 +92,7 @@ END;
    create or replace public synonym errlog for <your-error-schema>.errlog;
    create or replace public synonym errmore for <your-error-schema>.errmore;
 
-   create or replace public synonym pkg_err for <your-error-schema>.pkg_err;
+   create or replace public synonym err for <your-error-schema>.err;
    
 */
 
