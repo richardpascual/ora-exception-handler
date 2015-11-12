@@ -30,11 +30,12 @@ CREATE TABLE ERRLOG (
 
 
 CREATE TABLE ERRMORE (
+    errinfo_id  INTEGER NOT NULL,
     errlog_id   INTEGER NOT NULL,
     stack   VARCHAR2(4000),
     backtrace  VARCHAR2(4000),
     full_backtrace  CLOB,
-       constraint errmore_pk primary key ( errlog_id ) );
+       constraint errmore_pk primary key ( errinfo_id ) );
        
 
 
