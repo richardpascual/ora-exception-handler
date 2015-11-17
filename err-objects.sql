@@ -34,6 +34,7 @@ CREATE TABLE ERRMORE (
     errlog_id   INTEGER NOT NULL,
     stack   VARCHAR2(4000),
     backtrace  VARCHAR2(4000),
+    full_stack CLOB,
     full_backtrace  CLOB,
        constraint errmore_pk primary key ( errinfo_id ) );
        
@@ -89,6 +90,13 @@ BEGIN
 END;
 /
 
+Prompt Foreign Key Constraints on Table ERRMORE;
+ALTER TABLE ERRMORE ADD (
+  CONSTRAINT FK_ERRMORE__ERRLOG 
+  FOREIGN KEY (ERRLOG_ID) 
+  REFERENCES ERRLOG (ERRLOG_ID)
+  ENABLE VALIDATE);
+/
 
 /* The following is optional, which may be helpful in providing access to this
    procedure from a reusable perspective (i.e., multiple schemas).
