@@ -1,6 +1,6 @@
 -- ora-exception-handler (err-objects.sql)
 /*
-   -- Richard Paascual
+   -- Richard Pascual
    -- Project Tomosoft
    -- Oracle Exception Handler, Enhanced Update
    -- 11/11/2015
