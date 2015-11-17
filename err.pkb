@@ -44,6 +44,7 @@ IS
       client_info   v$session.client_info%TYPE
    );
 
+
    PROCEDURE handle (
       errcode   IN   PLS_INTEGER := NULL,
       errmsg    IN   VARCHAR2 := NULL,
@@ -54,6 +55,7 @@ IS
    IS
       l_session_id   PLS_INTEGER;
       l_error_info   t_error_info;
+      
    BEGIN
       l_session_id := SYS_CONTEXT ('USERENV', 'SID');
 
@@ -134,17 +136,14 @@ IS
    END RAISE;
 
    PROCEDURE capture_session (
-      session_id     IN       PLS_INTEGER := NULL,
       session_data   OUT      t_session_data
    )
    IS
    BEGIN
-      SELECT module,
-             action,
-             client_info
-        INTO session_data
-        FROM v$session
-       WHERE SID = session_id;
+      DBMS_APPLICATION_INFO.READ_CLIENT_INFO (client_info => session_data.client_info);
+      DBMS_APPLICATION_INFO.READ_MODULE(module_name => session_data.module, 
+         action_name => session_data.action);
+
    END capture_session;
 
    PROCEDURE LOG (
@@ -167,7 +166,7 @@ IS
          l_verbosity := TRUE;
       END IF;
 
-      capture_session (session_id, l_session_data);
+      capture_session (l_session_data);
 
       IF g_target = c_table
       THEN
