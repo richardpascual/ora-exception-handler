@@ -2,6 +2,8 @@
 
 This started out as a quick project to assist with other Oracle-based PL/SQL programming projects. It is an adaptation of a PL/SQL package script originally written by Steven Feuerstein in a back-issue of O'Reilly's *Oracle PL/SQL Best Practices (First Edition)*. I have added some additional enhancements such as session id tracking, custom error message calls, application self identification.
 
+Before you download from the **master** branch, make sure to check out the **expanded-error-stack** branch of the repository.  It contains the new changes destined for version 2.0.  There is a new table for stacktrace errors and also access to session information (DBMS_APPLICATION_INFO) for improved troubleshooting ability.  More details on how to use this new functionality is in the wiki. 
+
 ## Installation Notes ##
 
 Log in to the schema you wish to implement this package. It is recommended NOT to install this in the SYS schema which is generally reserved for system and database management tasks. Instead, at the very least, create a user account which will serve as the home of this package and its supporting table. To use the install script ERR.sql as it is written, you will need to do the following:
