@@ -1,0 +1,47 @@
+# Oracle Exception Handler #
+
+This started out as a quick project to assist with other Oracle-based PL/SQL programming projects. It is an adaptation of a PL/SQL package script originally written by Steven Feuerstein in a back-issue of O'Reilly's *Oracle PL/SQL Best Practices (First Edition)*. I have added some additional enhancements such as session id tracking, custom error message calls, application self identification.
+
+## Installation Notes ##
+
+Log in to the schema you wish to implement this package. It is recommended NOT to install this in the SYS schema which is generally reserved for system and database management tasks. Instead, at the very least, create a user account which will serve as the home of this package and its supporting table. To use the install script ERR.sql as it is written, you will need to do the following:
+
+#. Log in as the SYS user as the SYSDBA role.
+    SQLPLUS /nolog
+    connect sys/password as sysdba
+#. Issue the following command before executing the scripts, substituting your schema/user name in place of the placeholder used below:
+    ALTER SESSION SET CURRENT_SCHEMA = your-user-schema
+#. Run the scripts in the following order: ERR.sql; ERR.pks (package spec); ERR.pkb (package body)
+
+That's it.
+
+## Implementation Guide ##
+
+To implement the package, the easiest way is to use the default behavior, which sends all error output messages to the table. You also have the option to send error output selectively to DBMS_OUTPUT, or to a FILE. The example below is an exception block where you send the standard information to a table:
+
+    EXCEPTION
+        When OTHERS THEN
+            ERR.HANDLE;
+    END;
+
+Note that all arguments are optional and that this package procedure call will work for almost every error situation dynamically. See the Wiki for further notes and recipes for the package calls so that you can understand what functionality is available.
+
+## License Information ##
+
+    oracle-exception-handler: a flexible package object for dynamic PL/SQL exception handling
+    Copyright (C) 2011  Richard Pascual <richpascual@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+A copy of the complete GNU GPL License agreement is available from this project under the file name: LICENSE.txt
